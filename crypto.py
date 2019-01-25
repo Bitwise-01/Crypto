@@ -47,6 +47,27 @@ class CryptoRSA:
             return True 
         except ValueError:
             return False
+    
+    @staticmethod
+    def save(publ, priv):
+        for fname, key in zip(['public.pem', 'private.key'], [publ, priv]):
+            with open(fname, 'wb') as f:
+                f.write(key)
+
+    @staticmethod
+    def read(publ_file, priv_file):
+        publ = b'' 
+        priv = b'' 
+
+        with open('public.pem', 'rb') as f:
+            for n in f:
+                publ += n 
+        
+        with open('private.key', 'rb') as f:
+            for n in f:
+                priv += n
+            
+        return publ, priv
 
 
 class CryptoAES:
