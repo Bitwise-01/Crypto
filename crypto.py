@@ -80,17 +80,24 @@ class CryptoAES:
     def gen_nonce(cls):
         return b64encode(get_random_bytes(12))
 
-    @staticmethod
-    def encrypt(data, key, nonce, is_file=False):
-        key, nonce = [b64decode(_) for _ in [key, nonce]]
+    @classmethod
+    def encrypt(cls, data, key):
+        nonce = cls.gen_nonce()
+        key = SHA256.new(key).digest()
+        
         cipher = AES.new(key, AES.MODE_GCM, nonce=nonce)
-        ciphertext = cipher.encrypt(data)
-        return b64encode(ciphertext) if not is_file else ciphertext
+        ciphertext = cipher.encrypt(data)        
+        return ciphertext + nonce
 
-    @staticmethod
-    def decrypt(ciphertext, key, nonce, is_file=False):
-        key, nonce = [b64decode(_) for _ in [key, nonce]]
-        ciphertext = b64decode(ciphertext) if not is_file else ciphertext
+    @classmethod
+    def decrypt(cls, data, key):
+        cipher_nonce = data
+        index = len(cipher_nonce) - len(cls.gen_nonce())
+        key = SHA256.new(key).digest()
+
+        nonce = cipher_nonce[index:]
+        ciphertext = cipher_nonce[:index]
+
         cipher = AES.new(key, AES.MODE_GCM, nonce=nonce)
         plaintext = cipher.decrypt(ciphertext)
         return plaintext
