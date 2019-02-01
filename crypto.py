@@ -2,7 +2,6 @@
 # Author: Pure-L0G1C
 # Description: Encryption & Decryption
 
-from base64 import b64encode
 from Crypto.Hash import SHA256
 from Crypto.PublicKey import RSA
 from Crypto.Signature import pkcs1_15
@@ -74,8 +73,8 @@ class CryptoAES:
 
     @staticmethod
     def encrypt(data, key):
+        nonce = get_random_bytes(12)
         key = SHA256.new(key).digest()
-        nonce = b64encode(get_random_bytes(12))
         
         cipher = AES.new(key, AES.MODE_GCM, nonce=nonce)
         ciphertext = cipher.encrypt(data)        
@@ -84,7 +83,7 @@ class CryptoAES:
     @staticmethod
     def decrypt(ciphertext, key):
         cipher_nonce = ciphertext
-        index = len(cipher_nonce) - 16
+        index = len(cipher_nonce) - 12
         key = SHA256.new(key).digest()
 
         nonce = cipher_nonce[index:]
