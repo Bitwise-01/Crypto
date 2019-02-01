@@ -2,10 +2,10 @@
 # Author: Pure-L0G1C
 # Description: Encryption & Decryption
 
+from base64 import b64encode
 from Crypto.Hash import SHA256
 from Crypto.PublicKey import RSA
 from Crypto.Signature import pkcs1_15
-from base64 import b64encode, b64decode
 from Crypto.Cipher import AES, PKCS1_OAEP 
 from Crypto.Random import get_random_bytes
 
@@ -73,26 +73,18 @@ class CryptoRSA:
 class CryptoAES:
 
     @staticmethod
-    def gen_key():
-        return b64encode(get_random_bytes(16))
-
-    @classmethod
-    def gen_nonce(cls):
-        return b64encode(get_random_bytes(12))
-
-    @classmethod
-    def encrypt(cls, data, key):
-        nonce = cls.gen_nonce()
+    def encrypt(data, key):
         key = SHA256.new(key).digest()
+        nonce = b64encode(get_random_bytes(12))
         
         cipher = AES.new(key, AES.MODE_GCM, nonce=nonce)
         ciphertext = cipher.encrypt(data)        
         return ciphertext + nonce
 
-    @classmethod
-    def decrypt(cls, data, key):
-        cipher_nonce = data
-        index = len(cipher_nonce) - len(cls.gen_nonce())
+    @staticmethod
+    def decrypt(ciphertext, key):
+        cipher_nonce = ciphertext
+        index = len(cipher_nonce) - 16
         key = SHA256.new(key).digest()
 
         nonce = cipher_nonce[index:]
