@@ -42,9 +42,10 @@ print('Ciphertext: {}\nPlaintext: {}'.format(ciphertext, plaintext))
 ### Encrypt & Decrypt a session key
 
 ```python
-from crypto import CryptoRSA
+from crypto import CryptoRSA, CryptoAES
 
-session_key = b'This is my 16-byte AES key'
+# generate session key
+session_key = CryptoAES.generate_key()
 
 # generate key pair
 public_key, private_key = CryptoRSA.gen_key()
