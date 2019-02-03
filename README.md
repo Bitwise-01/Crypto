@@ -22,7 +22,6 @@ plaintext = CryptoAES.decrypt(ciphertext, key)
 print(plaintext)
 ```
 
-# AES 
 ### Encrypt & Decrypt
 ```python
 from crypto import CryptoAES
@@ -35,7 +34,6 @@ plaintext = CryptoAES.decrypt(ciphertext, key)
 
 print('Ciphertext: {}\nPlaintext: {}'.format(ciphertext, plaintext))
 ```
-
 
 # RSA
 
