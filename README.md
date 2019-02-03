@@ -22,6 +22,21 @@ plaintext = CryptoAES.decrypt(ciphertext, key)
 print(plaintext)
 ```
 
+# AES 
+### Encrypt & Decrypt
+```python
+from crypto import CryptoAES
+
+secret = b'No one but you should see this'
+key = CryptoAES.generate_key()
+
+ciphertext = CryptoAES.encrypt(secret, key)
+plaintext = CryptoAES.decrypt(ciphertext, key)
+
+print('Ciphertext: {}\nPlaintext: {}'.format(ciphertext, plaintext))
+```
+
+
 # RSA
 
 ### Encrypt & Decrypt a session key
